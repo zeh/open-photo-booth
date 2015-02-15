@@ -1,0 +1,9 @@
+{
+  "name": "photobooth",
+  "version": "1.0.0",
+  "description": "Photo Booth",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-ts": "^3.0.0"
+  }
+}
