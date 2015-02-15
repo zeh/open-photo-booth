@@ -1,11 +1,16 @@
+/// <reference path='display/CameraView.ts'/>
+
 module PhotoBooth {
 	export class App {
 
-		root:HTMLElement;
+        root: HTMLElement;
+        camera: CameraView;
 
 		constructor(root:HTMLElement) {
 			this.root = root;
-			this.root.innerHTML = "Loaded.";
+
+            this.camera = new CameraView();
+            this.root.appendChild(this.camera.getElement());
 		}
 
 		start() {
