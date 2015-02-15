@@ -1,9 +1,64 @@
 var PhotoBooth;
 (function (PhotoBooth) {
+    var CameraView = (function () {
+        function CameraView() {
+            this.element = document.createElement("div");
+            this.element.style.width = "100%";
+            this.element.style.height = "100%";
+            this.element.style.overflow = "hidden";
+            this.video = document.createElement("video");
+            this.video.play();
+            this.video.autoplay = true;
+            this.video.style.width = "100%";
+            this.video.style.height = "100%";
+            this.video.style["objectFit"] = "cover";
+            this.element.appendChild(this.video);
+            if (this.hasGetUserMedia()) {
+                this.getUserMedia({ video: true, audio: false }, this.onLocalStreamCapture.bind(this), this.onLocalStreamError.bind(this));
+            }
+            else {
+                console.error("getUserMedia() is not supported.");
+            }
+        }
+        CameraView.prototype.getElement = function () {
+            return this.element;
+        };
+        CameraView.prototype.getUserMediaWrapper = function () {
+            var func = navigator["getUserMedia"] || navigator["webkitGetUserMedia"] || navigator["mozGetUserMedia"] || navigator["msGetUserMedia"];
+            if (func != undefined)
+                func = func.bind(navigator);
+            return func;
+        };
+        CameraView.prototype.hasGetUserMedia = function () {
+            return this.getUserMediaWrapper() != undefined;
+        };
+        CameraView.prototype.getUserMedia = function (constraints, successCallback, errorCallback) {
+            var getUserMediaFunc = this.getUserMediaWrapper();
+            if (getUserMediaFunc != undefined) {
+                getUserMediaFunc(constraints, successCallback, errorCallback);
+            }
+        };
+        CameraView.prototype.onLocalStreamError = function (e) {
+            console.error("Error capturing camera");
+        };
+        CameraView.prototype.onLocalStreamCapture = function (localMediaStream) {
+            console.log("Camera capture success");
+            this.video.src = URL.createObjectURL(localMediaStream);
+            this.video.onloadedmetadata = function (e) {
+                console.log("Loaded metadata.");
+            };
+        };
+        return CameraView;
+    })();
+    PhotoBooth.CameraView = CameraView;
+})(PhotoBooth || (PhotoBooth = {}));
+var PhotoBooth;
+(function (PhotoBooth) {
     var App = (function () {
         function App(root) {
             this.root = root;
-            this.root.innerHTML = "Loaded.";
+            this.camera = new PhotoBooth.CameraView();
+            this.root.appendChild(this.camera.getElement());
         }
         App.prototype.start = function () {
             console.log("Initialized successfully");
