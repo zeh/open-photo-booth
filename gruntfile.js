@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 				htmlVarTemplate: '<%= ext %>',						// Template for variable name used in generated ts from html files [(default) '<%= ext %>]
 																	// Both html templates accept the ext and filename parameters.
 				*/
-				noImplicitAny: true,			// set to true to pass --noImplicitAny to the compiler. [true | false (default)]
+				noImplicitAny: false,			// set to true to pass --noImplicitAny to the compiler. [true | false (default)]
 				fast: "watch"					// see https://github.com/TypeStrong/grunt-ts/blob/master/docs/fast.md ["watch" (default) | "always" | "never"]
 				/* ,compiler: './node_modules/grunt-ts/customcompiler/tsc'	*/ //will use the specified compiler.
 			},
