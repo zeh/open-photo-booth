@@ -6,7 +6,13 @@
 		videoSprite: PIXI.Sprite;
 		localMediaStream: any;
 
-		constructor() {
+		desiredWidth: number;
+		desiredHeight: number;
+
+		constructor(desiredWidth, desiredHeight) {
+			this.desiredWidth = desiredWidth;
+			this.desiredHeight = desiredHeight;
+
 			super();
 
 			if (this.hasGetUserMedia()) {
@@ -53,13 +59,12 @@
 			this.videoSprite = new PIXI.Sprite(this.videoTexture);
 			this.addChild(this.videoSprite);
 
-			/*
-			this.videoTexture = PIXI.VideoTexture.fromUrl(URL.createObjectURL(this.localMediaStream), PIXI.scaleModes.LINEAR);
-			var sprite = new PIXI.Sprite(this.videoTexture);
-			sprite.width = 1080;
-			sprite.height = 1920;
-			this.stage.addChild(sprite);
-			*/
+			this.videoSprite.scale.x = this.desiredWidth / this.video.videoWidth;
+			this.videoSprite.scale.y = this.desiredHeight / this.video.videoHeight;
+
+			// Wait until video is available?
+			// if( video.readyState === video.HAVE_ENOUGH_DATA ){
+			//ctx.drawImage(video, 0, 0);
 		}
 
 		getUserMediaWrapper() {
