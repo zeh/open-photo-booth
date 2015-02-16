@@ -71,5 +71,16 @@ window.addEventListener("load", function () {
     var element = document.getElementById('content');
     var photobooth = new PhotoBooth.App(element);
     photobooth.start();
+    var stats = new Stats();
+    stats.setMode(0);
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.left = '0px';
+    stats.domElement.style.top = '0px';
+    document.body.appendChild(stats.domElement);
+    setInterval(function () {
+        stats.begin();
+        stats.end();
+    }, 1000 / 60);
+    var renderer = new PIXI.WebGLRenderer(800, 600);
 });
 //# sourceMappingURL=photobooth.js.map

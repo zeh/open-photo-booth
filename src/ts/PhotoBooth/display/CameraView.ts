@@ -20,14 +20,12 @@
 
             this.element.appendChild(this.video);
 
-			// Create hooks
-
+			// Start user media
 			if (this.hasGetUserMedia()) {
 				this.getUserMedia({ video: true, audio: false }, this.onLocalStreamCapture.bind(this), this.onLocalStreamError.bind(this));
 			} else {
 				console.error("getUserMedia() is not supported.");
 			}
-
         }
 
         getElement() {
