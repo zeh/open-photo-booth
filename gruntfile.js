@@ -2,6 +2,18 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		clean: {
+			build: {
+				src: ["release/"]
+			}
+		},
+		copy: {
+			main: {
+				files: [
+					{ expand: true, cwd: 'src/', src: ['**', '!**/*.ts', '!ts/**'], dest: 'release/' },
+				],
+			},
+		},
 		ts: {
 			// use to override the default options, See: http://gruntjs.com/configuring-tasks#options
 			// these are the default options to the typescript compiler for grunt-ts:
@@ -39,26 +51,21 @@ module.exports = function(grunt) {
 				*/
 			}
 		},
-		copy: {
-			main: {
-				files: [
-					{expand: true, cwd: 'src/', src: ['**', '!**/*.ts', '!ts/**'], dest: 'release/'},
-				],
-			},
-		},
 	});
 	
 	grunt.loadNpmTasks("grunt-ts");
 	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-clean');
 
-	grunt.registerTask("build", ["copy:main", "ts:dev"]);
+	grunt.registerTask("build", ["clean:build", "copy:main", "ts:dev"]);
 
 	grunt.registerTask('default', 'Shows available tasks', function() {
 		grunt.log.writeln("--------------------------------------------------------------------");
 		grunt.log.writeln("Available tasks: ");
 		grunt.log.writeln();
-		grunt.log.writeln("build		: Copy static (main) files, and build the ts files and watch for changes");
+		grunt.log.writeln("clean		: Clean the /release folder");
 		grunt.log.writeln("copy			: Copy static (main) files");
+		grunt.log.writeln("build		: Clean, copy static files, and build the ts files and watch for changes");
 		grunt.log.writeln("--------------------------------------------------------------------");
 	});
 	
