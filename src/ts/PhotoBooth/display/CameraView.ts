@@ -22,7 +22,26 @@
 
 			// Start user media
 			if (this.hasGetUserMedia()) {
-				this.getUserMedia({ video: true, audio: false }, this.onLocalStreamCapture.bind(this), this.onLocalStreamError.bind(this));
+				//this.getUserMedia({ video: true, audio: false }, this.onLocalStreamCapture.bind(this), this.onLocalStreamError.bind(this));
+				this.getUserMedia({
+					video: {
+						mandatory: {
+							maxWidth: 270,
+							minHeight: 480,
+							/* maxWidth, maxHeight, aspectRatio */
+						},
+						optional: [
+							{ height: 650 },
+							{ aspectRatio: 1 / 2 },
+							/*
+							{ width: { min: 650 } },
+							{ frameRate: 60 },
+							{ width: { max: 800 } },
+							{ facingMode: "user" }
+							*/
+						]
+					}
+				}, this.onLocalStreamCapture.bind(this), this.onLocalStreamError.bind(this));
 			} else {
 				console.error("getUserMedia() is not supported.");
 			}
@@ -50,17 +69,20 @@
 		}
 
 		onLocalStreamError(e:Event) {
-			console.error("Error capturing camera");
+			console.error("Error capturing camera: ", e);
 		}
+
+		// To stop:
+		//video.src = null;
+		//stream.stop();
 
 		onLocalStreamCapture(localMediaStream:any) {
 			console.log("Camera capture success");
 			this.video.src = URL.createObjectURL(localMediaStream);
 
-			// Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
-			// See crbug.com/110938.
 			this.video.onloadedmetadata = function (e) {
 				console.log("Loaded metadata.");
+				console.log("Actual video size is " + this.videoWidth + "x" + this.videoHeight);
 			};
 		}
     }

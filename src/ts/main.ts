@@ -1,26 +1,22 @@
 /// <reference path='PhotoBooth/App.ts'/>
-/// <reference path="definitions/stats.d.ts" />
-/// <reference path="definitions/pixi.d.ts" />
 
 window.addEventListener("load", function() {
     var element = document.getElementById('content');
-	var photobooth = new PhotoBooth.App(element);
+	var photobooth = new PhotoBooth.App(element, window.outerWidth, window.outerHeight);
 	photobooth.start();
 
+	// Statistics
 	var stats = new Stats();
-	stats.setMode(0); // 0: fps, 1: ms
-
-	// Align top-left
+	stats.setMode(0);
 	stats.domElement.style.position = 'absolute';
 	stats.domElement.style.left = '0px';
 	stats.domElement.style.top = '0px';
 	document.body.appendChild(stats.domElement);
-	setInterval(function () {
+	var renderStats = function () {
 		stats.begin();
-		// your code goes here
+		// Code...
 		stats.end();
-	}, 1000 / 60);
-
-
-	var renderer = new PIXI.WebGLRenderer(800, 600);
+		window.requestAnimationFrame(renderStats);
+	};
+	renderStats();
 });
