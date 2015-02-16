@@ -1,4 +1,6 @@
-﻿module PhotoBooth {
+﻿/// <reference path='FilterFactory.ts'/>
+
+module PhotoBooth {
     export class CameraSprite extends PIXI.DisplayObjectContainer {
 
 		video: HTMLVideoElement;
@@ -9,11 +11,13 @@
 		desiredWidth: number;
 		desiredHeight: number;
 
+		currentFilterTemp: number;
+
 		constructor(desiredWidth, desiredHeight) {
+			super();
+
 			this.desiredWidth = desiredWidth;
 			this.desiredHeight = desiredHeight;
-
-			super();
 
 			if (this.hasGetUserMedia()) {
 				//this.getUserMedia({ video: true, audio: false }, this.onLocalStreamCapture.bind(this), this.onLocalStreamError.bind(this));
@@ -62,6 +66,12 @@
 			this.videoSprite.scale.x = this.desiredWidth / this.video.videoWidth;
 			this.videoSprite.scale.y = this.desiredHeight / this.video.videoHeight;
 
+			this.videoSprite.click = this.onClickCanvas.bind(this);
+			this.videoSprite.interactive = true;
+
+			this.currentFilterTemp = 0;
+			this.videoSprite.shader = FilterFactory.filters[0].shader;
+
 			// Wait until video is available?
 			// if( video.readyState === video.HAVE_ENOUGH_DATA ){
 			//ctx.drawImage(video, 0, 0);
@@ -102,6 +112,11 @@
 			console.log("Loaded metadata.");
 			console.log("Actual video size is " + this.video.videoWidth + "x" + this.video.videoHeight);
 			this.createVideoSprite();
+		}
+
+		onClickCanvas(e: PIXI.InteractionData) {
+			console.log("tap");
+			this.videoSprite.shader = FilterFactory.filters[(this.currentFilterTemp++) % FilterFactory.filters.length].shader;
 		}
 	}
 }

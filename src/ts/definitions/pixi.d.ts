@@ -174,7 +174,7 @@ declare module PIXI {
 
     export class AbstractFilter {
 
-        constructor(fragmentSrc: string[], uniforms: any);
+        constructor(fragmentSrc?: string[], uniforms?: any);
 
         dirty: boolean;
         padding: number;
@@ -416,7 +416,7 @@ declare module PIXI {
 
     export class ColorMatrixFilter extends AbstractFilter {
 
-        matrix: Matrix;
+        matrix: number[];
 
     }
 
@@ -1019,7 +1019,7 @@ declare module PIXI {
 
         anchor: Point;
         blendMode: blendModes;
-        shader: IPixiShader;
+        shader: AbstractFilter; // [[zeh]] IPixiShader;
         texture: Texture;
         tint: number;
 
