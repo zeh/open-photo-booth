@@ -8,10 +8,13 @@ This is a very empty project right now, as it's still being built.
 
 ## Features planned:
 
-* Taking photos
-* Photo effects
+* Standby/attractor mode
+* Taking sequence of photos
+* Applying photo effects (a la Instagram)
 * Uploading to Instagram (UploadQueue)
 * Printing (PrintQueue)
+* Tagging?
+* Showing current collection of photos during standby?
 
 ## Building
 
@@ -20,7 +23,7 @@ OpenPhotoBooth uses grunt as its build manager. Once downloaded, run `npm instal
 
 ## Running
 
-Open /release/index.html inside a browser.
+Open /release/index.html inside a compatible browser.
 
 
 ## Visual Studio
