@@ -1,17 +1,17 @@
-/// <reference path='display/CameraSprite.ts'/>
+/// <reference path='display/RootSprite.ts'/>
 /// <reference path="../definitions/stats.d.ts" />
 /// <reference path="../definitions/pixi.d.ts" />
 
 module PhotoBooth {
 	export class App {
 
-        rootElement: HTMLElement;
-		cameraSprite: CameraSprite;
-		renderer: PIXI.WebGLRenderer;
-		stage: PIXI.Stage;
-		videoTexture: PIXI.Texture;
-		width: number;
-		height: number;
+        private rootElement: HTMLElement;
+		private cameraSprite: CameraSprite;
+		private renderer: PIXI.WebGLRenderer;
+		private stage: PIXI.Stage;
+		private width: number;
+		private height: number;
+		private rootSprite: RootSprite;
 
 		constructor(rootElement: HTMLElement, width: number, height: number) {
 			this.rootElement = rootElement;
@@ -25,16 +25,9 @@ module PhotoBooth {
 			// Stage
 			this.stage = new PIXI.Stage(0xff000000);
 
-			// Camera sprite
-			this.cameraSprite = new CameraSprite(width, height);
-			this.stage.addChild(this.cameraSprite);
-
-			this.videoTexture = null;
-
-			var text = new PIXI.Text("TEST This is a test.");
-			text.x = 100;
-			text.y = 100;
-			this.stage.addChild(text);
+			// Root
+			this.rootSprite = new RootSprite(width, height);
+			this.stage.addChild(this.rootSprite);
 
 			// Start
 			this.render();

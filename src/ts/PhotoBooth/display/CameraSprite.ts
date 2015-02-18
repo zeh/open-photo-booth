@@ -24,8 +24,8 @@ module PhotoBooth {
 				this.getUserMedia({
 					video: {
 						mandatory: {
-							maxWidth: 270,
-							minHeight: 480,
+							maxWidth: desiredWidth,
+							minHeight: desiredHeight,
 							/* maxWidth, maxHeight, aspectRatio */
 						},
 						optional: [
@@ -115,8 +115,8 @@ module PhotoBooth {
 		}
 
 		onClickCanvas(e: PIXI.InteractionData) {
-			console.log("tap");
-			this.videoSprite.shader = FilterFactory.filters[(this.currentFilterTemp++) % FilterFactory.filters.length].shader;
+			//this.videoSprite.shader = FilterFactory.filters[(this.currentFilterTemp++) % FilterFactory.filters.length].shader;
+			this.videoSprite.filters = [FilterFactory.filters[(this.currentFilterTemp++) % FilterFactory.filters.length].shader];
 		}
 	}
 }
