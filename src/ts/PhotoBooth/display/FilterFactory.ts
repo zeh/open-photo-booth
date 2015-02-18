@@ -33,6 +33,16 @@
 				0, 0, 0, 1];
 
 			FilterFactory.filters.push(new FilterDefinition(mtx, 0.5, 0.5));
+
+			mtx = new PIXI.ColorMatrixFilter();
+			mtx.matrix = [
+				0.5, 0, 0, 0,
+				0, 0.5, 0, 0,
+				0, 0, 0.5, 0,
+				0, 0, 0, 1];
+
+			FilterFactory.filters.push(new FilterDefinition(mtx, 0.5, 0.5));
+
 		})();
 	}
 }
