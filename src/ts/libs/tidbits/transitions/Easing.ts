@@ -24,7 +24,7 @@ module zehfernando.transitions {
 	 * Based on Robert Penner's easing equations - remade from Tweener's equations but SIMPLIFIED
 	 * Not fully tested!
 	 */
-	export class Equations {
+	export class Easing {
 
 		// Constants
 		private static HALF_PI:number = Math.PI / 2;
@@ -95,7 +95,7 @@ module zehfernando.transitions {
 		}
 
 		static cubicInOut(t:number):number {
-			return (t *= 2) < 1 ? this.cubicIn(t)/2 : this.cubicOut(t-1)/2+0.5; // TODO: redo with in-line calculation
+			return (t *= 2) < 1 ? Easing.cubicIn(t)/2 : Easing.cubicOut(t-1)/2+0.5; // TODO: redo with in-line calculation
 		}
 
 		/**
@@ -120,7 +120,7 @@ module zehfernando.transitions {
 		}
 
 		static quartInOut(t:number):number {
-			return (t *= 2) < 1 ? this.quartIn(t)/2 : this.quartOut(t-1)/2+0.5; // TODO: redo with in-line calculation
+			return (t *= 2) < 1 ? Easing.quartIn(t)/2 : Easing.quartOut(t-1)/2+0.5; // TODO: redo with in-line calculation
 		}
 
 		/**
@@ -145,7 +145,7 @@ module zehfernando.transitions {
 		}
 
 		static quintInOut(t:number):number {
-			return (t *= 2) < 1 ? this.quintIn(t)/2 : this.quintOut(t-1)/2+0.5; // TODO: redo with in-line calculation
+			return (t *= 2) < 1 ? Easing.quintIn(t)/2 : Easing.quintOut(t-1)/2+0.5; // TODO: redo with in-line calculation
 		}
 
 		/**
@@ -155,7 +155,7 @@ module zehfernando.transitions {
 		 * @return				The new value/phase (0-1).
 		 */
 		static sineIn(t:number):number {
-			return -1 * Math.cos(t * this.HALF_PI) + 1;
+			return -1 * Math.cos(t * Easing.HALF_PI) + 1;
 		}
 
 		/**
@@ -165,11 +165,11 @@ module zehfernando.transitions {
 		 * @return				The new value/phase (0-1).
 		 */
 		static sineOut(t:number):number {
-			return Math.sin(t * this.HALF_PI);
+			return Math.sin(t * Easing.HALF_PI);
 		}
 
 		static sineInOut(t:number):number {
-			return (t *= 2) < 1 ? this.sineIn(t)/2 : this.sineOut(t-1)/2+0.5; // TODO: redo with in-line calculation
+			return (t *= 2) < 1 ? Easing.sineIn(t)/2 : Easing.sineOut(t-1)/2+0.5; // TODO: redo with in-line calculation
 		}
 
 		/**
@@ -199,7 +199,7 @@ module zehfernando.transitions {
 		}
 
 		static expoInOut(t:number):number {
-			return (t *= 2) < 1 ? this.expoIn(t)/2 : this.expoOut(t-1)/2+0.5; // TODO: redo with in-line calculation
+			return (t *= 2) < 1 ? Easing.expoIn(t)/2 : Easing.expoOut(t-1)/2+0.5; // TODO: redo with in-line calculation
 		}
 
 		/**
@@ -224,7 +224,7 @@ module zehfernando.transitions {
 		}
 
 		static circInOut(t:number):number {
-			return (t *= 2) < 1 ? this.circIn(t)/2 : this.circOut(t-1)/2+0.5; // TODO: redo with in-line calculation
+			return (t *= 2) < 1 ? Easing.circIn(t)/2 : Easing.circOut(t-1)/2+0.5; // TODO: redo with in-line calculation
 		}
 
 		/**
@@ -243,9 +243,9 @@ module zehfernando.transitions {
 				a = 1;
 				s = p / 4;
 			} else {
-				s = p / this.TWO_PI * Math.asin(1 / a);
+				s = p / Easing.TWO_PI * Math.asin(1 / a);
 			}
-			return -(a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t - s) * this.TWO_PI / p));
+			return -(a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t - s) * Easing.TWO_PI / p));
 		}
 
 		/**
@@ -263,9 +263,9 @@ module zehfernando.transitions {
 				a = 1;
 				s = p / 4;
 			} else {
-				s = p / this.TWO_PI * Math.asin(1 / a);
+				s = p / Easing.TWO_PI * Math.asin(1 / a);
 			}
-			return (a * Math.pow(2, -10 * t) * Math.sin((t - s) * this.TWO_PI / p ) + 1);
+			return (a * Math.pow(2, -10 * t) * Math.sin((t - s) * Easing.TWO_PI / p ) + 1);
 		}
 
 		/**
@@ -291,8 +291,8 @@ module zehfernando.transitions {
 			return t*t*((s+1)*t + s) + 1;
 		}
 
-		static backInOut(t:number):number {
-			return (t *= 2) < 1 ? this.backIn(t)/2 : this.backOut(t-1)/2+0.5; // TODO: redo with in-line calculation
+		static backInOut(t: number): number {
+			return (t *= 2) < 1 ? Easing.backIn(t)/2 : Easing.backOut(t-1)/2+0.5; // TODO: redo with in-line calculation
 		}
 
 		/**
@@ -302,7 +302,7 @@ module zehfernando.transitions {
 		 * @param	p			Period.
 		 */
 		static bounceIn(t:number):number {
-			return 1 - this.bounceOut(1-t);
+			return 1 - Easing.bounceOut(1-t);
 		}
 
 		/**

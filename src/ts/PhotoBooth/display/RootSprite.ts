@@ -3,6 +3,7 @@
 /// <reference path='../AppConstants.ts'/>
 /// <reference path='shapes/Quad.ts'/>
 /// <reference path='../../libs/tidbits/utils/MathUtils.ts'/>
+/// <reference path='../../libs/tidbits/transitions/ZTween.ts'/>
 
 module PhotoBooth {
 
@@ -97,11 +98,13 @@ module PhotoBooth {
 			switch (newState) {
 				case RootState.Standby:
 					this.state = newState;
-					this.cameraFocusedState = 0;
+					zehfernando.transitions.ZTween.add(this, { cameraFocusedState: 0 }, { time: 0.5, transition: zehfernando.transitions.Easing.backInOut });
+					//this.cameraFocusedState = 0;
 					break;
 				case RootState.Photographing:
 					this.state = newState;
-					this.cameraFocusedState = 1;
+					zehfernando.transitions.ZTween.add(this, { cameraFocusedState: 1 }, { time: 0.5, transition: zehfernando.transitions.Easing.backInOut });
+					//this.cameraFocusedState = 1;
 					break;
 				case RootState.Filter:
 					this.state = newState;
