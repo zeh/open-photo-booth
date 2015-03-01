@@ -1,6 +1,8 @@
 ﻿/// <reference path='FilterFactory.ts'/>
 /// <reference path='CameraSprite.ts'/>
 /// <reference path='../AppConstants.ts'/>
+/// <reference path='shapes/Quad.ts'/>
+/// <reference path='../../libs/tidbits/utils/MathUtils.ts'/>
 
 module PhotoBooth {
 
@@ -42,9 +44,27 @@ module PhotoBooth {
 			this.addChild(this.cameraView);
 
 			this.debugText = new PIXI.Text("DEBUG");
-			this.debugText.x = 100;
-			this.debugText.y = 100;
+			this.debugText.x = 400;
+			this.debugText.y = 50;
 			this.addChild(this.debugText);
+
+			var box = new Quad(0xff0000, 100, 100);
+			box.x = 400;
+			box.y = 100;
+			box.interactive = true;
+			box.click = function(e: PIXI.InteractionData) {
+				this.changeState(RootState.Photographing);
+			}.bind(this);
+			this.addChild(box);
+
+			var box2 = new Quad(0xffff00, 100, 100);
+			box2.x = 600;
+			box2.y = 100;
+			box2.interactive = true;
+			box2.click = function(e: PIXI.InteractionData) {
+				this.changeState(RootState.Standby);
+			}.bind(this);
+			this.addChild(box2);
 
 			// Defaults for getter/setters
 			this.cameraFocusedState = 0;
@@ -79,6 +99,14 @@ module PhotoBooth {
 					this.state = newState;
 					this.cameraFocusedState = 0;
 					break;
+				case RootState.Photographing:
+					this.state = newState;
+					this.cameraFocusedState = 1;
+					break;
+				case RootState.Filter:
+					this.state = newState;
+					this.cameraFocusedState = 0;
+					break;
 			}
 
 			// Switch the debug text
@@ -89,9 +117,18 @@ module PhotoBooth {
 		}
 
 		private applyCameraFocusedState() {
-			this.cameraView.scale.x = this.cameraView.scale.y = 1 + (1-this.cameraFocusedState);
+			this.cameraView.scale.x = this.cameraView.scale.y = zehfernando.utils.MathUtils.map(this._cameraFocusedState, 0, 1, this.desiredWidth / this.cameraView.nativeWidth, this.desiredHeight / this.cameraView.nativeHeight);
+			this.cameraView.x = this.width * 0.5 - this.cameraView.width * 0.5;
+			this.cameraView.y = this.height * 0.5 - this.cameraView.height * 0.5;
 		}
 
+		get width(): number {
+			return this.desiredWidth;
+		}
+
+		get height(): number {
+			return this.desiredHeight;
+		}
 
 	}
 }

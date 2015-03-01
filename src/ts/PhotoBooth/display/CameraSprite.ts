@@ -3,15 +3,15 @@
 module PhotoBooth {
     export class CameraSprite extends PIXI.DisplayObjectContainer {
 
-		video: HTMLVideoElement;
-		videoTexture: PIXI.Texture; // Actually PIXI.VideoTexture
-		videoSprite: PIXI.Sprite;
-		localMediaStream: any;
+		private video: HTMLVideoElement;
+		private videoTexture: PIXI.Texture; // Actually PIXI.VideoTexture
+		private videoSprite: PIXI.Sprite;
+		private localMediaStream: any;
 
-		desiredWidth: number;
-		desiredHeight: number;
+		private desiredWidth: number;
+		private desiredHeight: number;
 
-		currentFilterTemp: number;
+		private currentFilterTemp: number;
 
 		constructor(desiredWidth, desiredHeight) {
 			super();
@@ -66,7 +66,7 @@ module PhotoBooth {
 			this.videoSprite.scale.x = this.desiredWidth / this.video.videoWidth;
 			this.videoSprite.scale.y = this.desiredHeight / this.video.videoHeight;
 
-			this.videoSprite.click = this.onClickCanvas.bind(this);
+			//this.videoSprite.click = this.onClickCanvas.bind(this);
 			this.videoSprite.interactive = true;
 
 			this.currentFilterTemp = 0;
@@ -114,9 +114,31 @@ module PhotoBooth {
 			this.createVideoSprite();
 		}
 
+		/*
 		onClickCanvas(e: PIXI.InteractionData) {
 			//this.videoSprite.shader = FilterFactory.filters[(this.currentFilterTemp++) % FilterFactory.filters.length].shader;
 			this.videoSprite.filters = [FilterFactory.filters[(this.currentFilterTemp++) % FilterFactory.filters.length].shader];
 		}
+		*/
+
+		// ================================================================================================================
+		// ACCESSOR INTERFACE ---------------------------------------------------------------------------------------------
+
+		get nativeWidth(): number {
+			return this.desiredWidth;
+		}
+
+		get nativeHeight(): number {
+			return this.desiredHeight;
+		}
+
+		get width(): number {
+			return this.desiredWidth * this.scale.x;
+		}
+
+		get height(): number {
+			return this.desiredHeight * this.scale.y;
+		}
+
 	}
 }
