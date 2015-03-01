@@ -254,6 +254,546 @@ var zehfernando;
         utils.MathUtils = MathUtils;
     })(utils = zehfernando.utils || (zehfernando.utils = {}));
 })(zehfernando || (zehfernando = {}));
+var zehfernando;
+(function (zehfernando) {
+    var signals;
+    (function (signals) {
+        var SimpleSignal = (function () {
+            function SimpleSignal() {
+                this.functions = [];
+            }
+            SimpleSignal.prototype.add = function (func) {
+                if (this.functions.indexOf(func) == -1) {
+                    this.functions.push(func);
+                    return true;
+                }
+                return false;
+            };
+            SimpleSignal.prototype.remove = function (func) {
+                this.ifr = this.functions.indexOf(func);
+                if (this.ifr > -1) {
+                    this.functions.splice(this.ifr, 1);
+                    return true;
+                }
+                return false;
+            };
+            SimpleSignal.prototype.removeAll = function () {
+                if (this.functions.length > 0) {
+                    this.functions.length = 0;
+                    return true;
+                }
+                return false;
+            };
+            SimpleSignal.prototype.dispatch = function () {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i - 0] = arguments[_i];
+                }
+                var functionsDuplicate = this.functions.concat();
+                for (var i = 0; i < functionsDuplicate.length; i++) {
+                    functionsDuplicate[i].apply(undefined, args);
+                }
+            };
+            Object.defineProperty(SimpleSignal.prototype, "numItems", {
+                get: function () {
+                    return this.functions.length;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return SimpleSignal;
+        })();
+        signals.SimpleSignal = SimpleSignal;
+    })(signals = zehfernando.signals || (zehfernando.signals = {}));
+})(zehfernando || (zehfernando = {}));
+var zehfernando;
+(function (zehfernando) {
+    var transitions;
+    (function (transitions) {
+        var Easing = (function () {
+            function Easing() {
+            }
+            Easing.none = function (t) {
+                return t;
+            };
+            Easing.quadIn = function (t) {
+                return t * t;
+            };
+            Easing.quadOut = function (t) {
+                return -t * (t - 2);
+            };
+            Easing.quadInOut = function (t) {
+                return ((t *= 2) < 1) ? t * t * 0.5 : -0.5 * (--t * (t - 2) - 1);
+            };
+            Easing.cubicIn = function (t) {
+                return t * t * t;
+            };
+            Easing.cubicOut = function (t) {
+                return (t = t - 1) * t * t + 1;
+            };
+            Easing.cubicInOut = function (t) {
+                return (t *= 2) < 1 ? Easing.cubicIn(t) / 2 : Easing.cubicOut(t - 1) / 2 + 0.5;
+            };
+            Easing.quartIn = function (t) {
+                return t * t * t * t;
+            };
+            Easing.quartOut = function (t) {
+                t--;
+                return -1 * (t * t * t * t - 1);
+            };
+            Easing.quartInOut = function (t) {
+                return (t *= 2) < 1 ? Easing.quartIn(t) / 2 : Easing.quartOut(t - 1) / 2 + 0.5;
+            };
+            Easing.quintIn = function (t) {
+                return t * t * t * t * t;
+            };
+            Easing.quintOut = function (t) {
+                t--;
+                return t * t * t * t * t + 1;
+            };
+            Easing.quintInOut = function (t) {
+                return (t *= 2) < 1 ? Easing.quintIn(t) / 2 : Easing.quintOut(t - 1) / 2 + 0.5;
+            };
+            Easing.sineIn = function (t) {
+                return -1 * Math.cos(t * Easing.HALF_PI) + 1;
+            };
+            Easing.sineOut = function (t) {
+                return Math.sin(t * Easing.HALF_PI);
+            };
+            Easing.sineInOut = function (t) {
+                return (t *= 2) < 1 ? Easing.sineIn(t) / 2 : Easing.sineOut(t - 1) / 2 + 0.5;
+            };
+            Easing.expoIn = function (t) {
+                return (t == 0) ? 0 : Math.pow(2, 10 * (t - 1)) - 0.001;
+            };
+            Easing.expoOut = function (t) {
+                return (t >= 0.999) ? 1 : 1.001 * (-Math.pow(2, -10 * t) + 1);
+            };
+            Easing.expoInOut = function (t) {
+                return (t *= 2) < 1 ? Easing.expoIn(t) / 2 : Easing.expoOut(t - 1) / 2 + 0.5;
+            };
+            Easing.circIn = function (t) {
+                return -1 * (Math.sqrt(1 - t * t) - 1);
+            };
+            Easing.circOut = function (t) {
+                t--;
+                return Math.sqrt(1 - t * t);
+            };
+            Easing.circInOut = function (t) {
+                return (t *= 2) < 1 ? Easing.circIn(t) / 2 : Easing.circOut(t - 1) / 2 + 0.5;
+            };
+            Easing.elasticIn = function (t, a, p) {
+                if (a === void 0) { a = 0; }
+                if (p === void 0) { p = 0.3; }
+                if (t == 0)
+                    return 0;
+                if (t == 1)
+                    return 1;
+                var s;
+                if (a < 1) {
+                    a = 1;
+                    s = p / 4;
+                }
+                else {
+                    s = p / Easing.TWO_PI * Math.asin(1 / a);
+                }
+                return -(a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t - s) * Easing.TWO_PI / p));
+            };
+            Easing.elasticOut = function (t, a, p) {
+                if (a === void 0) { a = 0; }
+                if (p === void 0) { p = 0.3; }
+                if (t == 0)
+                    return 0;
+                if (t == 1)
+                    return 1;
+                var s;
+                if (a < 1) {
+                    a = 1;
+                    s = p / 4;
+                }
+                else {
+                    s = p / Easing.TWO_PI * Math.asin(1 / a);
+                }
+                return (a * Math.pow(2, -10 * t) * Math.sin((t - s) * Easing.TWO_PI / p) + 1);
+            };
+            Easing.backIn = function (t, s) {
+                if (s === void 0) { s = 1.70158; }
+                return t * t * ((s + 1) * t - s);
+            };
+            Easing.backOut = function (t, s) {
+                if (s === void 0) { s = 1.70158; }
+                t--;
+                return t * t * ((s + 1) * t + s) + 1;
+            };
+            Easing.backInOut = function (t) {
+                return (t *= 2) < 1 ? Easing.backIn(t) / 2 : Easing.backOut(t - 1) / 2 + 0.5;
+            };
+            Easing.bounceIn = function (t) {
+                return 1 - Easing.bounceOut(1 - t);
+            };
+            Easing.bounceOut = function (t) {
+                if (t < (1 / 2.75)) {
+                    return 7.5625 * t * t;
+                }
+                else if (t < (2 / 2.75)) {
+                    return 7.5625 * (t -= (1.5 / 2.75)) * t + .75;
+                }
+                else if (t < (2.5 / 2.75)) {
+                    return 7.5625 * (t -= (2.25 / 2.75)) * t + .9375;
+                }
+                else {
+                    return 7.5625 * (t -= (2.625 / 2.75)) * t + .984375;
+                }
+            };
+            Easing.combined = function (t, __equations) {
+                var l = __equations.length;
+                var eq = Math.floor(t * l);
+                if (eq == __equations.length)
+                    eq = l - 1;
+                return Number(__equations[eq](t * l - eq));
+            };
+            Easing.HALF_PI = Math.PI / 2;
+            Easing.TWO_PI = Math.PI * 2;
+            return Easing;
+        })();
+        transitions.Easing = Easing;
+    })(transitions = zehfernando.transitions || (zehfernando.transitions = {}));
+})(zehfernando || (zehfernando = {}));
+var zehfernando;
+(function (zehfernando) {
+    var transitions;
+    (function (transitions) {
+        var ZTween = (function () {
+            function ZTween(target, properties, parameters) {
+                if (properties === void 0) { properties = null; }
+                if (parameters === void 0) { parameters = null; }
+                this._target = target;
+                this.properties = new Array();
+                for (var pName in properties) {
+                    this.properties.push(new ZTweenProperty(pName, properties[pName]));
+                }
+                this.timeCreated = ZTween.currentTime;
+                this.timeStart = this.timeCreated;
+                this.time = 0;
+                this.delay = 0;
+                this.transition = transitions.Easing.none;
+                this._onStart = new zehfernando.signals.SimpleSignal();
+                this._onUpdate = new zehfernando.signals.SimpleSignal();
+                this._onComplete = new zehfernando.signals.SimpleSignal();
+                if (parameters != null) {
+                    if (parameters.hasOwnProperty("time"))
+                        this.time = parameters["time"];
+                    if (parameters.hasOwnProperty("delay"))
+                        this.delay = parameters["delay"];
+                    if (parameters.hasOwnProperty("transition"))
+                        this.transition = parameters["transition"];
+                    if (parameters.hasOwnProperty("onStart"))
+                        this._onStart.add(parameters["onStart"]);
+                    if (parameters.hasOwnProperty("onUpdate"))
+                        this._onUpdate.add(parameters["onUpdate"]);
+                    if (parameters.hasOwnProperty("onComplete"))
+                        this._onComplete.add(parameters["onComplete"]);
+                }
+                this._useFrames = false;
+                this._paused = false;
+                this.started = false;
+            }
+            ZTween._init = function () {
+                this.currentTimeFrame = 0;
+                this.currentTime = 0;
+                this.frameTick();
+            };
+            ZTween.prototype.updateCache = function () {
+                this.timeDuration = this.timeComplete - this.timeStart;
+            };
+            ZTween.updateTweens = function () {
+                this.l = this.tweens.length;
+                for (this.i = 0; this.i < this.l; this.i++) {
+                    if (this.tweens[this.i] == null || !this.tweens[this.i].update(this.currentTime, this.currentTimeFrame)) {
+                        this.tweens.splice(this.i, 1);
+                        this.i--;
+                        this.l--;
+                    }
+                }
+            };
+            ZTween.frameTick = function () {
+                this.currentTime = (new Date()).getTime();
+                this.currentTimeFrame++;
+                this.updateTweens();
+                window.requestAnimationFrame(this.frameTick.bind(this));
+            };
+            ZTween.add = function (target, properties, parameters) {
+                if (properties === void 0) { properties = null; }
+                if (parameters === void 0) { parameters = null; }
+                var t = new ZTween(target, properties, parameters);
+                this.tweens.push(t);
+                return t;
+            };
+            ZTween.updateTime = function () {
+                this.currentTime = (new Date()).getTime();
+            };
+            ZTween.remove = function (target) {
+                var props = [];
+                for (var _i = 1; _i < arguments.length; _i++) {
+                    props[_i - 1] = arguments[_i];
+                }
+                var tl = [];
+                var l = this.tweens.length;
+                var i;
+                var j;
+                for (i = 0; i < l; i++) {
+                    if (this.tweens[i] != null && this.tweens[i]._target == target) {
+                        if (props.length > 0) {
+                            for (j = 0; j < this.tweens[i].properties.length; j++) {
+                                if (props.indexOf(this.tweens[i].properties[j].name) > -1) {
+                                    this.tweens[i].properties.splice(j, 1);
+                                    j--;
+                                }
+                            }
+                            if (this.tweens[i].properties.length == 0)
+                                tl.push(this.tweens[i]);
+                        }
+                        else {
+                            tl.push(this.tweens[i]);
+                        }
+                    }
+                }
+                var removedAny = false;
+                l = tl.length;
+                for (i = 0; i < l; i++) {
+                    j = this.tweens.indexOf(tl[i]);
+                    this.removeTweenByIndex(j);
+                    removedAny = true;
+                }
+                return removedAny;
+            };
+            ZTween.hasTween = function (target) {
+                var props = [];
+                for (var _i = 1; _i < arguments.length; _i++) {
+                    props[_i - 1] = arguments[_i];
+                }
+                var l = this.tweens.length;
+                var i;
+                var j;
+                for (i = 0; i < l; i++) {
+                    if (this.tweens[i] != null && this.tweens[i]._target == target) {
+                        if (props.length > 0) {
+                            for (j = 0; j < this.tweens[i].properties.length; j++) {
+                                if (props.indexOf(this.tweens[i].properties[j].name) > -1) {
+                                    return true;
+                                }
+                            }
+                        }
+                        else {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+            ZTween.getTweens = function (target) {
+                var props = [];
+                for (var _i = 1; _i < arguments.length; _i++) {
+                    props[_i - 1] = arguments[_i];
+                }
+                var tl = [];
+                var l = this.tweens.length;
+                var i;
+                var j;
+                var found;
+                for (i = 0; i < l; i++) {
+                    if (this.tweens[i] != null && this.tweens[i]._target == target) {
+                        if (props.length > 0) {
+                            found = false;
+                            for (j = 0; j < this.tweens[i].properties.length; j++) {
+                                if (props.indexOf(this.tweens[i].properties[j].name) > -1) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (found)
+                                tl.push(this.tweens[i]);
+                        }
+                        else {
+                            tl.push(this.tweens[i]);
+                        }
+                    }
+                }
+                return tl;
+            };
+            ZTween.pause = function (target) {
+                var props = [];
+                for (var _i = 1; _i < arguments.length; _i++) {
+                    props[_i - 1] = arguments[_i];
+                }
+                var pausedAny = false;
+                var ftweens = this.getTweens.apply(null, ([target]).concat(props));
+                var i;
+                for (i = 0; i < ftweens.length; i++) {
+                    if (!ftweens[i].paused) {
+                        ftweens[i].pause();
+                        pausedAny = true;
+                    }
+                }
+                return pausedAny;
+            };
+            ZTween.resume = function (target) {
+                var props = [];
+                for (var _i = 1; _i < arguments.length; _i++) {
+                    props[_i - 1] = arguments[_i];
+                }
+                var resumedAny = false;
+                var ftweens = this.getTweens.apply(null, ([target]).concat(props));
+                var i;
+                for (i = 0; i < ftweens.length; i++) {
+                    if (ftweens[i].paused) {
+                        ftweens[i].resume();
+                        resumedAny = true;
+                    }
+                }
+                return resumedAny;
+            };
+            ZTween.removeTweenByIndex = function (i) {
+                this.tweens[i] = null;
+            };
+            ZTween.prototype.update = function (currentTime, currentTimeFrame) {
+                if (this._paused)
+                    return true;
+                this.cTime = this._useFrames ? currentTimeFrame : currentTime;
+                if (this.started || this.cTime >= this.timeStart) {
+                    if (!this.started) {
+                        this._onStart.dispatch();
+                        for (this.i = 0; this.i < this.properties.length; this.i++) {
+                            this.tProperty = this.properties[this.i];
+                            this.pv = this._target[this.tProperty.name];
+                            this.tProperty.valueStart = isNaN(this.pv) ? this.tProperty.valueComplete : this.pv;
+                            this.tProperty.valueChange = this.tProperty.valueComplete - this.tProperty.valueStart;
+                        }
+                        this.started = true;
+                    }
+                    if (this.cTime >= this.timeComplete) {
+                        for (this.i = 0; this.i < this.properties.length; this.i++) {
+                            this.tProperty = this.properties[this.i];
+                            this._target[this.tProperty.name] = this.tProperty.valueComplete;
+                        }
+                        this._onUpdate.dispatch();
+                        this._onComplete.dispatch();
+                        return false;
+                    }
+                    else {
+                        this.t = this.transition((this.cTime - this.timeStart) / this.timeDuration);
+                        for (this.i = 0; this.i < this.properties.length; this.i++) {
+                            this.tProperty = this.properties[this.i];
+                            this._target[this.tProperty.name] = this.tProperty.valueStart + this.t * this.tProperty.valueChange;
+                        }
+                        this._onUpdate.dispatch();
+                    }
+                }
+                return true;
+            };
+            ZTween.prototype.pause = function () {
+                if (!this._paused) {
+                    this._paused = true;
+                    this.timePaused = this._useFrames ? ZTween.currentTimeFrame : ZTween.currentTime;
+                }
+            };
+            ZTween.prototype.resume = function () {
+                if (this._paused) {
+                    this._paused = false;
+                    var timeNow = this._useFrames ? ZTween.currentTimeFrame : ZTween.currentTime;
+                    this.timeStart += timeNow - this.timePaused;
+                    this.timeComplete += timeNow - this.timePaused;
+                }
+            };
+            Object.defineProperty(ZTween.prototype, "delay", {
+                get: function () {
+                    return (this.timeStart - this.timeCreated) / (this._useFrames ? 1 : 1000);
+                },
+                set: function (value) {
+                    this.timeStart = this.timeCreated + (value * (this._useFrames ? 1 : 1000));
+                    this.timeComplete = this.timeStart + this.timeDuration;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ZTween.prototype, "time", {
+                get: function () {
+                    return (this.timeComplete - this.timeStart) / (this._useFrames ? 1 : 1000);
+                },
+                set: function (value) {
+                    this.timeComplete = this.timeStart + (value * (this._useFrames ? 1 : 1000));
+                    this.updateCache();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ZTween.prototype, "paused", {
+                get: function () {
+                    return this._paused;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ZTween.prototype, "useFrames", {
+                get: function () {
+                    return this._useFrames;
+                },
+                set: function (value) {
+                    var tDelay = this.delay;
+                    var tTime = this.time;
+                    this._useFrames = value;
+                    this.timeStart = this._useFrames ? ZTween.currentTimeFrame : ZTween.currentTime;
+                    this.delay = tDelay;
+                    this.time = tTime;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ZTween.prototype, "target", {
+                get: function () {
+                    return this._target;
+                },
+                set: function (target) {
+                    this._target = target;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ZTween.prototype, "onStart", {
+                get: function () {
+                    return this._onStart;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ZTween.prototype, "onUpdate", {
+                get: function () {
+                    return this._onUpdate;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ZTween.prototype, "onComplete", {
+                get: function () {
+                    return this._onComplete;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            ZTween.tweens = [];
+            return ZTween;
+        })();
+        transitions.ZTween = ZTween;
+        var ZTweenProperty = (function () {
+            function ZTweenProperty(name, valueComplete) {
+                this.name = name;
+                this.valueComplete = valueComplete;
+            }
+            return ZTweenProperty;
+        })();
+        ZTween._init();
+    })(transitions = zehfernando.transitions || (zehfernando.transitions = {}));
+})(zehfernando || (zehfernando = {}));
 var PhotoBooth;
 (function (PhotoBooth) {
     var RootState;
@@ -313,11 +853,11 @@ var PhotoBooth;
             switch (newState) {
                 case 1 /* Standby */:
                     this.state = newState;
-                    this.cameraFocusedState = 0;
+                    zehfernando.transitions.ZTween.add(this, { cameraFocusedState: 0 }, { time: 0.5, transition: zehfernando.transitions.Easing.backInOut });
                     break;
                 case 2 /* Photographing */:
                     this.state = newState;
-                    this.cameraFocusedState = 1;
+                    zehfernando.transitions.ZTween.add(this, { cameraFocusedState: 1 }, { time: 0.5, transition: zehfernando.transitions.Easing.backInOut });
                     break;
                 case 3 /* Filter */:
                     this.state = newState;
