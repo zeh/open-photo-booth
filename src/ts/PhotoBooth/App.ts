@@ -1,5 +1,4 @@
 /// <reference path='display/RootSprite.ts'/>
-/// <reference path="../definitions/stats.d.ts" />
 /// <reference path="../definitions/pixi.d.ts" />
 
 module PhotoBooth {
