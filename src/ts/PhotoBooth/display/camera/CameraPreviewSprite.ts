@@ -13,7 +13,7 @@ module PhotoBooth {
 
 		private currentFilterTemp: number;
 
-		constructor(desiredWidth, desiredHeight) {
+		constructor(desiredWidth: number, desiredHeight: number) {
 			super();
 
 			this.desiredWidth = desiredWidth;

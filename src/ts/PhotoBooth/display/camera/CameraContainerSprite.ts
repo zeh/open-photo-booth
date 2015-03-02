@@ -11,7 +11,7 @@ module PhotoBooth {
 		private cameraPreview: CameraPreviewSprite;
 		private _focusedState: number; // 1 = focused (in center), 0 = not focused (full screen)
 
-		constructor(desiredWidth, desiredHeight) {
+		constructor(desiredWidth: number, desiredHeight: number) {
 			super();
 
 			this.desiredWidth = desiredWidth;

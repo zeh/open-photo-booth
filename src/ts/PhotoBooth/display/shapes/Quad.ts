@@ -1,7 +1,7 @@
 ﻿module PhotoBooth {
     export class Quad extends PIXI.Graphics {
 
-		constructor(desiredColor, desiredWidth, desiredHeight) {
+		constructor(desiredColor: number, desiredWidth: number, desiredHeight: number) {
 			super();
 
 			// Draws quad
