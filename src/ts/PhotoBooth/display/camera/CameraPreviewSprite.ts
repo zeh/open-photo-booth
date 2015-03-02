@@ -1,7 +1,7 @@
-﻿/// <reference path='FilterFactory.ts'/>
+﻿/// <reference path='../FilterFactory.ts'/>
 
 module PhotoBooth {
-    export class CameraSprite extends PIXI.DisplayObjectContainer {
+    export class CameraPreviewSprite extends PIXI.DisplayObjectContainer {
 
 		private video: HTMLVideoElement;
 		private videoTexture: PIXI.Texture; // Actually PIXI.VideoTexture

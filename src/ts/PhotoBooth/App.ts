@@ -5,7 +5,6 @@ module PhotoBooth {
 	export class App {
 
         private rootElement: HTMLElement;
-		private cameraSprite: CameraSprite;
 		private renderer: PIXI.WebGLRenderer;
 		private stage: PIXI.Stage;
 		private width: number;
