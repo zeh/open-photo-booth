@@ -20,6 +20,8 @@ module PhotoBooth {
 
 		// Properties
 		private cameraView: CameraSprite;
+		private topBar: PIXI.Sprite;
+		private bottomBar: PIXI.Sprite;
 		private desiredWidth: number;
 		private desiredHeight: number;
 		private state: RootState;
@@ -44,6 +46,18 @@ module PhotoBooth {
 			this.cameraView = new CameraSprite(AppConstants.DESIRED_CAMERA_DIMENSIONS, AppConstants.DESIRED_CAMERA_DIMENSIONS);
 			this.addChild(this.cameraView);
 
+			// Bars
+			var texture;
+
+			texture = PIXI.Texture.fromImage("images/blackbar_top.png");
+			this.topBar = new PIXI.Sprite(texture);
+			this.addChild(this.topBar);
+
+			texture = PIXI.Texture.fromImage("images/blackbar_bottom.png");
+			this.bottomBar = new PIXI.Sprite(texture);
+			this.addChild(this.bottomBar);
+
+			// Other
 			this.debugText = new PIXI.Text("DEBUG");
 			this.debugText.x = 400;
 			this.debugText.y = 50;
@@ -120,9 +134,19 @@ module PhotoBooth {
 		}
 
 		private applyCameraFocusedState() {
+			// Set camera size
 			this.cameraView.scale.x = this.cameraView.scale.y = zehfernando.utils.MathUtils.map(this._cameraFocusedState, 0, 1, this.desiredWidth / this.cameraView.nativeWidth, this.desiredHeight / this.cameraView.nativeHeight);
 			this.cameraView.x = this.width * 0.5 - this.cameraView.width * 0.5;
 			this.cameraView.y = this.height * 0.5 - this.cameraView.height * 0.5;
+
+			// Set bar sizes and position
+			this.topBar.scale.x = this.topBar.scale.y = this.width / this.topBar.texture.baseTexture.width;
+			this.topBar.x = 0;
+			this.topBar.y = zehfernando.utils.MathUtils.map(this._cameraFocusedState, 0, 1, 0, -this.topBar.height);
+
+			this.bottomBar.scale.x = this.bottomBar.scale.y = this.width / this.bottomBar.texture.baseTexture.width;
+			this.bottomBar.x = 0;
+			this.bottomBar.y = zehfernando.utils.MathUtils.map(this._cameraFocusedState, 0, 1, this.height - this.bottomBar.height, this.height);
 		}
 
 		get width(): number {
