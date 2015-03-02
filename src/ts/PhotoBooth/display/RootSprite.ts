@@ -1,9 +1,10 @@
-﻿/// <reference path='FilterFactory.ts'/>
-/// <reference path='camera/CameraContainerSprite.ts'/>
-/// <reference path='../AppConstants.ts'/>
-/// <reference path='shapes/Quad.ts'/>
-/// <reference path='../../libs/tidbits/utils/MathUtils.ts'/>
+﻿/// <reference path='../../libs/tidbits/utils/MathUtils.ts'/>
 /// <reference path='../../libs/tidbits/transitions/ZTween.ts'/>
+/// <reference path='../AppConstants.ts'/>
+/// <reference path='FilterFactory.ts'/>
+/// <reference path='camera/CameraContainerSprite.ts'/>
+/// <reference path='shapes/Quad.ts'/>
+/// <reference path='components/FlyingMessage.ts'/>
 
 module PhotoBooth {
 
@@ -23,6 +24,7 @@ module PhotoBooth {
 		private desiredHeight: number;
 		private cameraView: CameraContainerSprite;
 		private state: RootState;
+		private messageStart: FlyingMessage;
 
 		private debugText: PIXI.Text;
 
@@ -65,6 +67,11 @@ module PhotoBooth {
 				this.changeState(RootState.Standby);
 			}.bind(this);
 			this.addChild(box2);
+
+			this.messageStart = new FlyingMessage("images/message_tap_to_start.png", "images/message_background_short.png");
+			this.messageStart.x = this.desiredWidth * 0.5;
+			this.messageStart.y = this.desiredHeight * 0.5;
+			this.addChild(this.messageStart);
 
 			// End
 			this.changeState(RootState.Standby);
